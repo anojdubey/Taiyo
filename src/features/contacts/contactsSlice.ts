@@ -43,9 +43,20 @@ const contactsSlice = createSlice({
     addContact: (state, action: PayloadAction<Contact>) => {
       state.contacts.push(action.payload);
     },
-    // Define other reducers for editing and deleting contacts
+    editContact: (state, action: PayloadAction<Contact>) => {
+      const { id, fname, lname, status } = action.payload;
+      const existingContact = state.contacts.find(contact => contact.id === id);
+      if (existingContact) {
+        existingContact.fname = fname;
+        existingContact.lname = lname;
+        existingContact.status = status;
+      }
+    },
+    deleteContact: (state, action: PayloadAction<number>) => {
+      state.contacts = state.contacts.filter(contact => contact.id !== action.payload);
+    }
   },
 });
 
-export const { addContact } = contactsSlice.actions;
+export const { addContact ,editContact,deleteContact} = contactsSlice.actions;
 export default contactsSlice.reducer;
